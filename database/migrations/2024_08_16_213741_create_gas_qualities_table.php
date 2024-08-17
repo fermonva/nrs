@@ -14,7 +14,6 @@ return new class () extends Migration {
             $table->id();
             $table->string('name');
             $table->decimal('price', 8, 2);
-            $table->foreignId('provider_id')->constrained('providers')->onDelete('cascade');
             $table->timestamps();
         });
     }

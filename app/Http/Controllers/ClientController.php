@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Repositories\ClientRepositoryInterface;
+use App\Repositories\GasQualityRepositoryInterface;
+use App\Repositories\ProviderRepositoryInterface;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
     private ClientRepositoryInterface $clientRepositoryInterface;
+    private ProviderRepositoryInterface $providerRepositoryInterface;
+    private GasQualityRepositoryInterface $gasQualityRepositoryInterface;
 
-    public function __construct(ClientRepositoryInterface $clientRepositoryInterface)
+    public function __construct(ClientRepositoryInterface $clientRepositoryInterface, ProviderRepositoryInterface $providerRepositoryInterface, GasQualityRepositoryInterface $gasQualityRepositoryInterface)
     {
         $this->clientRepositoryInterface = $clientRepositoryInterface;
+        $this->providerRepositoryInterface = $providerRepositoryInterface;
+        $this->gasQualityRepositoryInterface = $gasQualityRepositoryInterface;
     }
 
     /**
@@ -57,7 +63,9 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        return view('clients.edit', compact('client'));
+        $providers = $this->providerRepositoryInterface->getAllProviders();
+        $gasQualities = $this->gasQualityRepositoryInterface->getAllGasQualities();
+        return view('clients.edit', compact('client', 'providers', 'gasQualities'));
     }
 
     /**
