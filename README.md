@@ -9,7 +9,7 @@ git clone https://github.com/laravel/laravel.git
 
 ### 2. Ingresar en el directorio:
 ```
-cd laradock
+cd laradockDocker
 ```
 
 ### 3. Ejecutar el docker-compose:
