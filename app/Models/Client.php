@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Client extends Model
 {
@@ -16,9 +17,8 @@ class Client extends Model
         'registration_date',
     ];
 
-    public function providers()
+    public function clientProviderGas()
     {
-        return $this->belongsToMany(Provider::class, 'client_provider')
-        ->withPivot('gas_quality_id', 'purchase_price', 'sale_price');
+        return $this->hasOne(ClientProviderGas::class, 'client_id');
     }
 }

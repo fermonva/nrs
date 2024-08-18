@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Clients') }}
+            {{ __('Clientes') }}
         </h2>
     </x-slot>
 
@@ -9,8 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg space-y-6">
                 <div class="flex justify-between items-center">
-                    <h1>Clients</h1>
-                    <a href="{{ route('clients.create') }}" class="btn btn-primary">Add Client</a>
+                    <h1 class="text-white">Clientes</h1>
+                    <a href="{{ route('clients.create') }}" class="btn btn-primary text-white">
+                    Agregar cliente</a>
                 </div>
 
                 @if($clientsWithNegativeProfit->isNotEmpty())
@@ -20,7 +21,7 @@
                             @foreach($clientsWithNegativeProfit as $client)
                                 <li>
                                     <strong>{{ $client->first_name }} {{ $client->last_name }}</strong> has a negative profit margin.
-                                    <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-warning btn-sm">Editar</a>
                                 </li>
                             @endforeach
                         </ul>
@@ -30,34 +31,33 @@
                 <table class="items-center bg-transparent w-full border-collapse">
                     <thead>
                         <tr>
-                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-gray-500 border-gray-100">Name</th>
-                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-gray-500 border-gray-100">DNI</th>
-                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-gray-500 border-gray-100">Provider</th>
-                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-gray-500 border-gray-100">Gas Quality</th>
-                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-gray-500 border-gray-100">Purchase Price</th>
-                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-gray-500 border-gray-100">Sale Price</th>
-                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-gray-500 border-gray-100">Profit</th>
-                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-gray-500 border-gray-100">Actions</th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-white border-gray-100">Nombre</th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-white border-gray-100">
+                            Calidad del gas</th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-white border-gray-100">
+                            Proveedor</th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-white border-gray-100">Precio de compra</th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-white border-gray-100">
+                            Precio de venta</th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-white border-gray-100">Beneficio</th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 dark:bg-gray-700 text-white border-gray-100">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($clients as $client)
                             <tr>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">{{ $client->first_name }} {{ $client->last_name }}</td>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">{{ $client->dni }}</td>
-                                    @foreach($client->providers as $provider)
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">{{ $provider->company_name }}</td>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">{{ $provider->pivot->gas_quality_id }}</td>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">{{ $provider->pivot->purchase_price }}</td>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">{{ $provider->pivot->sale_price }}</td>
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">{{ $provider->pivot->sale_price - $provider->pivot->purchase_price }}</td>
-                                    @endforeach
-                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">
-                                    <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-warning">Edit</a> |
+                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">{{ $client->first_name }} {{ $client->last_name }}</td>
+                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">{{ $client->gas_quality_name }}</td>
+                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">{{ $client->provider_name }}</td>
+                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">{{ $client->purchase_price }}</td>
+                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">{{ $client->sale_price }}</td>
+                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">{{ $client->profit }}</td>
+                                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">
+                                    <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-warning">Editar</a> |
                                     <form action="{{ route('clients.destroy', $client->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <button type="submit" class="btn btn-danger">Borrar</button>
                                     </form>
                                 </td>
                             </tr>

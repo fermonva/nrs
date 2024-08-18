@@ -7,7 +7,9 @@ use App\Models\Client;
 use App\Repositories\ClientRepositoryInterface;
 use App\Repositories\GasQualityRepositoryInterface;
 use App\Repositories\ProviderRepositoryInterface;
-use Illuminate\Http\Request;
+use Illuminate\Database\Events\TransactionBeginning;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
@@ -37,7 +39,9 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('clients.create');
+        $providers = $this->providerRepositoryInterface->getAllProviders();
+        $gasQualities = $this->gasQualityRepositoryInterface->getAllGasQualities();
+        return view('clients.create', compact('providers', 'gasQualities'));
     }
 
     /**
@@ -63,6 +67,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
+        $client = $this->clientRepositoryInterface->getClientById($client->id);
         $providers = $this->providerRepositoryInterface->getAllProviders();
         $gasQualities = $this->gasQualityRepositoryInterface->getAllGasQualities();
         return view('clients.edit', compact('client', 'providers', 'gasQualities'));
@@ -73,8 +78,28 @@ class ClientController extends Controller
      */
     public function update(ClientRequest $request, Client $client)
     {
-        $this->clientRepositoryInterface->updateClient($client, $request->validated());
-        return redirect()->route('clients.index')->with('success', 'Client updated successfully');
+        try {
+
+            $validatedClient = $request->only([
+                'first_name',
+                'last_name',
+                'dni',
+                'registration_date',
+            ]);
+
+            $this->clientRepositoryInterface->updateClient($client, $validatedClient);
+
+            // $client->providers()->updateExistingPivot($request->provider_id, $request->only([
+            //     'gas_quality_id' => $request->gas_quality_id,
+            //     'purchase_price' => $request->purchase_price,
+            //     'sale_price' => $request->sale_price
+            // ]));
+
+
+            return redirect()->route('clients.index')->with('success', 'Client updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('clients.index')->with('error', 'Error updating client');
+        }
     }
 
     /**

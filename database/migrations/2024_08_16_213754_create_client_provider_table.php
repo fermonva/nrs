@@ -10,13 +10,11 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('client_provider', function (Blueprint $table) {
+        Schema::create('client_provider_gas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->foreignId('provider_id')->constrained()->onDelete('cascade');
             $table->foreignId('gas_quality_id')->constrained()->onDelete('cascade');
-            $table->decimal('purchase_price', 8, 2);
-            $table->decimal('sale_price', 8, 2);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_provider');
+        Schema::dropIfExists('client_provider_gas');
     }
 };

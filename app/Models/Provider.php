@@ -16,15 +16,8 @@ class Provider extends Model
         'registration_date',
     ];
 
-    public function gasQualities()
+    public function clientProviderGas()
     {
-        return $this->hasMany(GasQuality::class);
-    }
-
-    public function clients()
-    {
-        return $this->belongsToMany(Client::class, 'client_provider')
-        ->withPivot('gas_quality_id', 'purchase_price', 'sale_price')
-        ->withTimestamps();
+        return $this->hasMany(ClientProviderGas::class, 'provider_id');
     }
 }

@@ -9,10 +9,10 @@ class GasQuality extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'provider_id'];
+    protected $fillable = ['name', 'price'];
 
-    public function provider()
+    public function clientProviderGas()
     {
-        return $this->belongsTo(Provider::class);
+        return $this->hasMany(ClientProviderGas::class, 'gas_quality_id');
     }
 }

@@ -3,16 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ClientRequest extends FormRequest
+class ProviderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,14 +22,9 @@ class ClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'dni' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('clients', 'dni')->ignore($this->client->id)
-            ],
+            'company_name' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'string', 'max:255'],
+            'cif' => ['required', 'string', 'max:255'],
             'registration_date' => ['required', 'date'],
         ];
     }
@@ -38,9 +32,9 @@ class ClientRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'first_name.required' => 'The :attribute field is required.',
-            'last_name.required' => 'The :attribute field is required.',
-            'dni.required' => 'The :attribute field is required.',
+            'company_name.required' => 'The :attribute field is required.',
+            'country.required' => 'The :attribute field is required.',
+            'cif.required' => 'The :attribute field is required.',
             'registration_date.required' => 'The :attribute field is required.',
         ];
     }
