@@ -9,6 +9,8 @@ class ClientProviderGas extends Model
 {
     use HasFactory;
 
+    protected $table = 'client_provider_gas';
+
     protected $fillable = [
         'client_id',
         'provider_id',

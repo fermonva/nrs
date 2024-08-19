@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProviderRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class ProviderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,12 +22,19 @@ class ProviderRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'company_name' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
             'cif' => ['required', 'string', 'max:255'],
             'registration_date' => ['required', 'date'],
         ];
+        if ($this->isMethod('post')) {
+            $rules['cif'][] = Rule::unique('providers', 'cif');
+        } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
+            $rules['cif'][] = Rule::unique('providers', 'cif')->ignore($this->provider->id);
+        }
+
+        return $rules;
     }
 
     public function messages(): array

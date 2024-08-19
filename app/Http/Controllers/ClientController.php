@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ClientsExport;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Repositories\ClientRepositoryInterface;
 use App\Repositories\GasQualityRepositoryInterface;
 use App\Repositories\ProviderRepositoryInterface;
-use Illuminate\Database\Events\TransactionBeginning;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClientController extends Controller
 {
@@ -49,8 +49,14 @@ class ClientController extends Controller
      */
     public function store(ClientRequest $request)
     {
-        $this->clientRepositoryInterface->createClient($request->validated());
-        return redirect()->route('clients.index')->with('success', 'Client created successfully');
+        try {
+            $this->clientRepositoryInterface->createClient($request->validated());
+
+            return redirect()->route('clients.index')->with('success', 'Client created successfully');
+        } catch (\Throwable $e) {
+            Log::error('Error creating client: ' . $e->getMessage());
+            return redirect()->route('clients.index')->with('error', 'Error creating client');
+        }
     }
 
     /**
@@ -79,25 +85,11 @@ class ClientController extends Controller
     public function update(ClientRequest $request, Client $client)
     {
         try {
-
-            $validatedClient = $request->only([
-                'first_name',
-                'last_name',
-                'dni',
-                'registration_date',
-            ]);
-
-            $this->clientRepositoryInterface->updateClient($client, $validatedClient);
-
-            // $client->providers()->updateExistingPivot($request->provider_id, $request->only([
-            //     'gas_quality_id' => $request->gas_quality_id,
-            //     'purchase_price' => $request->purchase_price,
-            //     'sale_price' => $request->sale_price
-            // ]));
-
+            $this->clientRepositoryInterface->updateClient($client, $request->validated());
 
             return redirect()->route('clients.index')->with('success', 'Client updated successfully');
         } catch (\Exception $e) {
+            Log::error('Error updating client: ' . $e->getMessage());
             return redirect()->route('clients.index')->with('error', 'Error updating client');
         }
     }
@@ -109,5 +101,10 @@ class ClientController extends Controller
     {
         $this->clientRepositoryInterface->deleteClient($client);
         return redirect()->route('clients.index')->with('success', 'Client deleted successfully');
+    }
+
+    public function export()
+    {
+        return Excel::download(new ClientsExport(), 'clientes.xlsx');
     }
 }

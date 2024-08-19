@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Client;
+use App\Models\ClientProviderGas;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class ClientRepository implements ClientRepositoryInterface
 {
@@ -14,6 +14,7 @@ class ClientRepository implements ClientRepositoryInterface
             'clients.id',
             'clients.first_name',
             'clients.last_name',
+            'clients.dni',
             'gas_qualities.id as gas_quality_id',
             'gas_qualities.name as gas_quality_name',
             'providers.id as provider_id',
@@ -34,6 +35,7 @@ class ClientRepository implements ClientRepositoryInterface
             'clients.id',
             'clients.first_name',
             'clients.last_name',
+            'clients.dni',
             'gas_qualities.id as gas_quality_id',
             'gas_qualities.name as gas_quality_name',
             'providers.id as provider_id',
@@ -51,18 +53,47 @@ class ClientRepository implements ClientRepositoryInterface
 
     public function createClient(array $data): Client
     {
-        return Client::create($data);
+        DB::beginTransaction();
+        try {
+            $client = Client::create($data);
+
+            if (isset($data['provider_id']) && isset($data['gas_quality_id'])) {
+                ClientProviderGas::create([
+                    'client_id' => $client->id,
+                    'provider_id' => $data['provider_id'],
+                    'gas_quality_id' => $data['gas_quality_id'],
+                ]);
+            }
+
+            DB::commit();
+            return $client;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     public function updateClient(Client $client, array $data): bool
     {
         DB::beginTransaction();
         try {
-            return $client->update($data);
+            $result = $client->update($data);
+
+            if (isset($data['provider_id']) && isset($data['gas_quality_id'])) {
+                $clientProviderGas = $client->clientProviderGas()->first();
+
+                if ($clientProviderGas) {
+                    $clientProviderGas->update([
+                        'provider_id' => $data['provider_id'],
+                        'gas_quality_id' => $data['gas_quality_id'],
+                    ]);
+                }
+            }
+
             DB::commit();
+            return $result;
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
             throw $e;
         }
     }
