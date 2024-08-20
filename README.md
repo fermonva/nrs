@@ -36,7 +36,12 @@ composer install
 php artisan migrate
 ```
 
-### 6. Ingresar a la aplicación desde el navegador:
+### 7. Ejecutar el seeder:
+```
+php artisan db:seed --class=GasQualitiesTableSeeder
+```
+
+### 8. Ingresar a la aplicación desde el navegador:
 ```
 http://localhost
 ```
