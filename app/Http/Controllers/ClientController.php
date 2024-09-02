@@ -8,6 +8,8 @@ use App\Models\Client;
 use App\Repositories\ClientRepositoryInterface;
 use App\Repositories\GasQualityRepositoryInterface;
 use App\Repositories\ProviderRepositoryInterface;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -19,17 +21,17 @@ class ClientController extends Controller
 
     public function __construct(ClientRepositoryInterface $clientRepositoryInterface, ProviderRepositoryInterface $providerRepositoryInterface, GasQualityRepositoryInterface $gasQualityRepositoryInterface)
     {
-        $this->clientRepositoryInterface = $clientRepositoryInterface;
-        $this->providerRepositoryInterface = $providerRepositoryInterface;
+        $this->clientRepositoryInterface     = $clientRepositoryInterface;
+        $this->providerRepositoryInterface   = $providerRepositoryInterface;
         $this->gasQualityRepositoryInterface = $gasQualityRepositoryInterface;
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Renderable
     {
-        $clients = $this->clientRepositoryInterface->getAllClients();
+        $clients                   = $this->clientRepositoryInterface->getAllClients();
         $clientsWithNegativeProfit = $this->clientRepositoryInterface->getClientsWithNegativeProfit();
         return view('clients.index', compact('clients', 'clientsWithNegativeProfit'));
     }
@@ -37,9 +39,9 @@ class ClientController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Renderable
     {
-        $providers = $this->providerRepositoryInterface->getAllProviders();
+        $providers    = $this->providerRepositoryInterface->getAllProviders();
         $gasQualities = $this->gasQualityRepositoryInterface->getAllGasQualities();
         return view('clients.create', compact('providers', 'gasQualities'));
     }
@@ -47,7 +49,7 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ClientRequest $request)
+    public function store(ClientRequest $request): RedirectResponse
     {
         try {
             $this->clientRepositoryInterface->createClient($request->validated());
@@ -62,7 +64,7 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Renderable
     {
         $client = $this->clientRepositoryInterface->getClientById($id);
         return view('clients.show', compact('client'));
@@ -71,10 +73,10 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Client $client)
+    public function edit(Client $client): Renderable
     {
-        $client = $this->clientRepositoryInterface->getClientById($client->id);
-        $providers = $this->providerRepositoryInterface->getAllProviders();
+        $client       = $this->clientRepositoryInterface->getClientById($client->id);
+        $providers    = $this->providerRepositoryInterface->getAllProviders();
         $gasQualities = $this->gasQualityRepositoryInterface->getAllGasQualities();
         return view('clients.edit', compact('client', 'providers', 'gasQualities'));
     }
@@ -82,7 +84,7 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ClientRequest $request, Client $client)
+    public function update(ClientRequest $request, Client $client): RedirectResponse
     {
         try {
             $this->clientRepositoryInterface->updateClient($client, $request->validated());
@@ -97,7 +99,7 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy(Client $client): RedirectResponse
     {
         $this->clientRepositoryInterface->deleteClient($client);
         return redirect()->route('clients.index')->with('success', 'Client deleted successfully');

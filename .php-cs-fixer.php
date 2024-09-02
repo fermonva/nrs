@@ -1,8 +1,15 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__)
-    ->exclude(['storage', 'vendor','bootstrap', 'node_modules'])
+    ->in([
+        __DIR__ . '/app',
+        __DIR__ . '/config',
+        __DIR__ . '/database',
+        __DIR__ . '/resources',
+        __DIR__ . '/routes',
+        __DIR__ . '/tests',
+    ])
+    ->exclude(['storage', 'vendor', 'bootstrap', 'node_modules'])
     ->name('*.php')
     ->notName(['*.blade.php', 'server.php'])
     ->ignoreDotFiles(true)
@@ -11,15 +18,16 @@ $finder = PhpCsFixer\Finder::create()
 return (new PhpCsFixer\Config())
     ->setFinder($finder)
     ->setRules([
-        '@PSR12' => true,
-        'array_indentation' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'combine_consecutive_unsets' => true,
-        'class_attributes_separation' => ['elements' => ['method' => 'one', ]],
+        '@PSR12'                                 => true,
+        'array_indentation'                      => true,
+        'array_syntax'                           => ['syntax' => 'short'],
+        'combine_consecutive_unsets'             => true,
+        'class_attributes_separation'            => ['elements' => ['method' => 'one', ]],
         'multiline_whitespace_before_semicolons' => false,
-        'single_quote' => true,
-
-        'binary_operator_spaces' => [
+        'single_quote'                           => true,
+        'ordered_imports'                        => true,
+        'binary_operator_spaces'                 => [
+            'default'   => 'align_single_space_minimal',
             'operators' => [
                 // '=>' => 'align',
                 // '=' => 'align'
@@ -32,12 +40,12 @@ return (new PhpCsFixer\Config())
         ],
         // 'cast_spaces' => true,
         // 'class_definition' => array('singleLine' => true),
-        'concat_space' => ['spacing' => 'one'],
-        'declare_equal_normalize' => true,
-        'function_typehint_space' => true,
+        'concat_space'              => ['spacing' => 'one'],
+        'declare_equal_normalize'   => true,
+        'function_typehint_space'   => true,
         'single_line_comment_style' => ['comment_types' => ['hash']],
-        'include' => true,
-        'lowercase_cast' => true,
+        'include'                   => true,
+        'lowercase_cast'            => true,
         // 'native_function_casing' => true,
         // 'new_with_braces' => true,
         // 'no_blank_lines_after_class_opening' => true,
@@ -66,9 +74,9 @@ return (new PhpCsFixer\Config())
         // 'no_trailing_comma_in_list_call' => true,
         // 'no_trailing_comma_in_singleline_array' => true,
         // 'no_unneeded_control_parentheses' => true,
-        'no_unused_imports' => true,
+        'no_unused_imports'                   => true,
         'no_whitespace_before_comma_in_array' => true,
-        'no_whitespace_in_blank_line' => true,
+        'no_whitespace_in_blank_line'         => true,
         // 'normalize_index_brace' => true,
         'object_operator_without_whitespace' => true,
         // 'php_unit_fqcn_annotation' => true,
@@ -100,12 +108,14 @@ return (new PhpCsFixer\Config())
         // 'standardize_not_equals' => true,
         'ternary_operator_spaces' => true,
         // 'trailing_comma_in_multiline' => ['elements' => ['arrays']],
-        'trim_array_spaces' => true,
-        'unary_operator_spaces' => true,
+        'trim_array_spaces'               => true,
+        'unary_operator_spaces'           => true,
         'whitespace_after_comma_in_array' => true,
-        'space_after_semicolon' => true,
+        'space_after_semicolon'           => true,
         // 'single_blank_line_at_eof' => false
     ])
+    ->setRiskyAllowed(true)
+    ->setUsingCache(true)
     // ->setIndent("\t")
     ->setLineEnding("\n")
 ;

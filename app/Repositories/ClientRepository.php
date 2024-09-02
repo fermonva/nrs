@@ -59,8 +59,8 @@ class ClientRepository implements ClientRepositoryInterface
 
             if (isset($data['provider_id']) && isset($data['gas_quality_id'])) {
                 ClientProviderGas::create([
-                    'client_id' => $client->id,
-                    'provider_id' => $data['provider_id'],
+                    'client_id'      => $client->id,
+                    'provider_id'    => $data['provider_id'],
                     'gas_quality_id' => $data['gas_quality_id'],
                 ]);
             }
@@ -84,7 +84,7 @@ class ClientRepository implements ClientRepositoryInterface
 
                 if ($clientProviderGas) {
                     $clientProviderGas->update([
-                        'provider_id' => $data['provider_id'],
+                        'provider_id'    => $data['provider_id'],
                         'gas_quality_id' => $data['gas_quality_id'],
                     ]);
                 }

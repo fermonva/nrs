@@ -22,7 +22,7 @@ class GasQualityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name'  => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric'],
         ];
     }
@@ -30,7 +30,7 @@ class GasQualityRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'The :attribute field is required.',
+            'name.required'  => 'The :attribute field is required.',
             'price.required' => 'The :attribute field is required.',
         ];
     }

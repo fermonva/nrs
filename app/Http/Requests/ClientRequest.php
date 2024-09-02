@@ -24,16 +24,15 @@ class ClientRequest extends FormRequest
     {
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'dni' => [
+            'last_name'  => ['required', 'string', 'max:255'],
+            'dni'        => [
                 'required',
                 'string',
                 'max:255',
-                // Rule::unique('clients', 'dni')->ignore($this->client->id)
             ],
             'registration_date' => ['required', 'date'],
-            'provider_id' => ['required', 'integer', 'exists:providers,id'],
-            'gas_quality_id' => ['required', 'integer', 'exists:gas_qualities,id'],
+            'provider_id'       => ['required', 'integer', 'exists:providers,id'],
+            'gas_quality_id'    => ['required', 'integer', 'exists:gas_qualities,id'],
         ];
 
         if ($this->isMethod('post')) {
@@ -48,14 +47,14 @@ class ClientRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'first_name.required' => 'The :attribute field is required.',
-            'last_name.required' => 'The :attribute field is required.',
-            'dni.required' => 'The :attribute field is required.',
+            'first_name.required'        => 'The :attribute field is required.',
+            'last_name.required'         => 'The :attribute field is required.',
+            'dni.required'               => 'The :attribute field is required.',
             'registration_date.required' => 'The :attribute field is required.',
-            'provider_id.required' => 'The :attribute field is required.',
-            'provider_id.exists' => 'The selected provider does not exist.',
-            'gas_quality_id.required' => 'The :attribute field is required.',
-            'gas_quality_id.exists' => 'The selected gas quality does not exist.',
+            'provider_id.required'       => 'The :attribute field is required.',
+            'provider_id.exists'         => 'The selected provider does not exist.',
+            'gas_quality_id.required'    => 'The :attribute field is required.',
+            'gas_quality_id.exists'      => 'The selected gas quality does not exist.',
         ];
     }
 }
