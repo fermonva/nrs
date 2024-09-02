@@ -9,39 +9,26 @@ git clone https://github.com/laravel/laravel.git
 
 ### 2. Ingresar en el directorio:
 ```
-cd laradockDocker
+sail up -d
 ```
 
-### 3. Ejecutar el docker-compose:
+### 3. Ejecutar composer para instalar las dependencias:
 ```
-docker-compose up -d
-```
-
-### 4. Ingresar al workspace virtual de desarrollo en docker:
-```
- docker exec -it nrs-workspace-1 /bin/sh
-```
-El nombre del workspace virtual de docker lo puede verificar con la imagen nrs-workspace:
-```
-docker ps
-```
-
-### 5. Ejecutar composer para instalar las dependencias:
-```
+sail shell
 composer install
 ```
 
-### 6. Ejecutar las migraciones:
+### 4. Ejecutar las migraciones:
 ```
-php artisan migrate
-```
-
-### 7. Ejecutar el seeder:
-```
-php artisan db:seed --class=GasQualitiesTableSeeder
+sail artisan migrate
 ```
 
-### 8. Ingresar a la aplicación desde el navegador:
+### 5. Ejecutar el seeder:
+```
+sail artisan db:seed --class=GasQualitiesTableSeeder
+```
+
+### 6. Ingresar a la aplicación desde el navegador:
 ```
 http://localhost
 ```
