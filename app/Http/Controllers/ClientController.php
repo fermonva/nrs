@@ -19,8 +19,11 @@ class ClientController extends Controller
     private ProviderRepositoryInterface $providerRepositoryInterface;
     private GasQualityRepositoryInterface $gasQualityRepositoryInterface;
 
-    public function __construct(ClientRepositoryInterface $clientRepositoryInterface, ProviderRepositoryInterface $providerRepositoryInterface, GasQualityRepositoryInterface $gasQualityRepositoryInterface)
-    {
+    public function __construct(
+        ClientRepositoryInterface $clientRepositoryInterface,
+        ProviderRepositoryInterface $providerRepositoryInterface,
+        GasQualityRepositoryInterface $gasQualityRepositoryInterface
+    ) {
         $this->clientRepositoryInterface     = $clientRepositoryInterface;
         $this->providerRepositoryInterface   = $providerRepositoryInterface;
         $this->gasQualityRepositoryInterface = $gasQualityRepositoryInterface;

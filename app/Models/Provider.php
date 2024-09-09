@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Provider extends Model
 {
@@ -16,7 +17,7 @@ class Provider extends Model
         'registration_date',
     ];
 
-    public function clientProviderGas()
+    public function clientProviderGas(): HasMany
     {
         return $this->hasMany(ClientProviderGas::class, 'provider_id');
     }

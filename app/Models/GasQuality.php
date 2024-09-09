@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GasQuality extends Model
 {
@@ -11,7 +12,7 @@ class GasQuality extends Model
 
     protected $fillable = ['name', 'price'];
 
-    public function clientProviderGas()
+    public function clientProviderGas(): HasMany
     {
         return $this->hasMany(ClientProviderGas::class, 'gas_quality_id');
     }

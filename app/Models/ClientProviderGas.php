@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ClientProviderGas extends Model
 {
@@ -17,17 +18,17 @@ class ClientProviderGas extends Model
         'gas_quality_id',
     ];
 
-    public function client()
+    public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
 
-    public function provider()
+    public function provider(): BelongsTo
     {
         return $this->belongsTo(Provider::class, 'provider_id');
     }
 
-    public function gasQuality()
+    public function gasQuality(): BelongsTo
     {
         return $this->belongsTo(GasQuality::class, 'gas_quality_id');
     }

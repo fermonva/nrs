@@ -27,9 +27,10 @@
                     <ul>
                         @foreach($clientsWithNegativeProfit as $client)
                         <li>
-                            <strong>{{ $client->first_name }} {{ $client->last_name }}</strong> has a negative profit
+                            <strong>{{ $client->FullName }}</strong> has a negative profit
                             margin.
-                            <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{{ route('clients.edit', $client->client_id) }}"
+                                class="btn btn-warning btn-sm">Editar</a>
                         </li>
                         @endforeach
                     </ul>
@@ -67,16 +68,16 @@
                         <tr>
                             <td
                                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">
-                                {{ $client->first_name }} {{ $client->last_name }}</td>
+                                {{ $client->full_name }}</td>
                             <td
                                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">
-                                {{ $client->gas_quality_name }}</td>
+                                {{ $client->gas_quality_name}}</td>
                             <td
                                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">
-                                {{ $client->provider_name }}</td>
+                                {{ $client->company_name }}</td>
                             <td
                                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">
-                                {{ $client->purchase_price }}</td>
+                                {{ $client->gas_quality_price }}</td>
                             <td
                                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">
                                 {{ $client->sale_price }}</td>
@@ -85,8 +86,9 @@
                                 {{ $client->profit }}</td>
                             <td
                                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center text-white">
-                                <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-warning">Editar</a> |
-                                <form action="{{ route('clients.destroy', $client->id) }}" method="POST"
+                                <a href="{{ route('clients.edit', $client->client_id) }}"
+                                    class="btn btn-warning">Editar</a> |
+                                <form action="{{ route('clients.destroy', $client->client_id) }}" method="POST"
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')

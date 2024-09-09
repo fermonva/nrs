@@ -16,6 +16,7 @@ return new class () extends Migration {
             $table->string('last_name');
             $table->string('dni')->unique();
             $table->date('registration_date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
