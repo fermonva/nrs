@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class ClientRepository implements ClientRepositoryInterface
 {
-    protected $model;
+    protected Client $model;
 
     public function __construct(Client $model)
     {
@@ -50,14 +50,14 @@ class ClientRepository implements ClientRepositoryInterface
         ])->select('id', 'first_name', 'last_name', 'dni')->findOrFail($id);
 
         return new ClientDto(
-            client_id: $client->id                                     ?? 0,
-            first_name: $client->first_name                            ?? 'N/A',
-            last_name: $client->last_name                              ?? 'N/A',
-            dni: $client->dni                                          ?? 'N/A',
-            gas_quality_id: $client->clientProviderGas->gasQuality->id ?? 0,
-            provider_id: $client->clientProviderGas->provider->id      ?? 0,
-            price: $client->clientProviderGas->gasQuality->price       ?? 0.0,
-            sale_price: $client->sale_price                            ?? 0.0
+            client_id: $client->id,
+            first_name: $client->first_name,
+            last_name: $client->last_name,
+            dni: $client->dni,
+            gas_quality_id: $client->clientProviderGas->gasQuality->id,
+            provider_id: $client->clientProviderGas->provider->id,
+            price: $client->clientProviderGas->gasQuality->price,
+            sale_price: $client->sale_price
         );
     }
 
@@ -65,22 +65,31 @@ class ClientRepository implements ClientRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $client = $this->model->create($data);
+            $client = $this->model->query()->create($data);
 
             if (isset($data['provider_id']) && isset($data['gas_quality_id'])) {
-                ClientProviderGas::create([
+                ClientProviderGas::query()->create([
                     'client_id'      => $client->id,
                     'provider_id'    => $data['provider_id'],
                     'gas_quality_id' => $data['gas_quality_id'],
                 ]);
             }
 
+            $result = $this->model->with([
+                'clientProviderGas.provider:id',
+                'clientProviderGas.gasQuality:id,price'
+            ])->select('id', 'first_name', 'last_name', 'dni')->findOrFail($client->id);
+
             DB::commit();
             return new ClientDto(
-                client_id: $client->id,
-                first_name: $client->first_name,
-                last_name: $client->last_name,
-                dni: $client->dni
+                client_id: $result->id,
+                first_name: $result->first_name,
+                last_name: $result->last_name,
+                dni: $result->dni,
+                gas_quality_id: $result->clientProviderGas->gasQuality->id,
+                provider_id: $result->clientProviderGas->provider->id,
+                price: $result->clientProviderGas->gasQuality->price,
+                sale_price: $result->sale_price
             );
         } catch (\Exception $e) {
             DB::rollBack();

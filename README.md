@@ -14,8 +14,7 @@ sail up -d
 
 ### 3. Ejecutar composer para instalar las dependencias:
 ```
-sail shell
-composer install
+sail composer install
 ```
 
 ### 4. Ejecutar las migraciones:

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\InvoiceSoapController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProviderController;
 use Illuminate\Support\Facades\Route;
@@ -22,5 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/clients', ClientController::class);
     Route::resource('/providers', ProviderController::class);
 });
+
+Route::get('/Invoices', [InvoiceSoapController::class, 'getInvoices'])->name('Invoices');
 
 require __DIR__ . '/auth.php';
