@@ -3,12 +3,14 @@
 namespace App\Repositories;
 
 use App\Dtos\ClientDto;
+use App\Dtos\ClientListDto;
 use App\Models\Client;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface ClientRepositoryInterface
 {
-    public function getAllClients(): Collection;
+    public function getAllClients($perPage): LengthAwarePaginator;
 
     public function getClientById($id): ClientDto;
 

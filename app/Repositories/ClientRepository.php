@@ -7,7 +7,7 @@ use App\Dtos\ClientListDto;
 use App\Exceptions\ClientCreationException;
 use App\Models\Client;
 use App\Models\ClientProviderGas;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class ClientRepository implements ClientRepositoryInterface
@@ -19,16 +19,16 @@ class ClientRepository implements ClientRepositoryInterface
         $this->model = $model;
     }
 
-    public function getAllClients(): Collection
+    public function getAllClients($perPage = 10): LengthAwarePaginator
     {
-        $clientProviderGas = $this->model->with([
+        $client = $this->model->with([
             'clientProviderGas.provider:id,company_name',
             'clientProviderGas.gasQuality:id,name,price'
-        ])->select('id', 'first_name', 'last_name')->get();
+        ])->select('id', 'first_name', 'last_name')->paginate($perPage = 10);
 
-        return $clientProviderGas->map(function ($client) {
-            $provider   = $client->clientProviderGas->provider;
-            $gasQuality = $client->clientProviderGas->gasQuality;
+        $client->getCollection()->transform(function ($client) {
+            $provider   = $client->clientProviderGas?->provider;
+            $gasQuality = $client->clientProviderGas?->gasQuality;
 
             return new ClientListDto(
                 client_id: $client->id                ?? 0,
@@ -40,6 +40,8 @@ class ClientRepository implements ClientRepositoryInterface
                 profit: $client->profit               ?? 0.0
             );
         });
+
+        return $client;
     }
 
     public function getClientById($id): ClientDto
@@ -81,6 +83,7 @@ class ClientRepository implements ClientRepositoryInterface
             ])->select('id', 'first_name', 'last_name', 'dni')->findOrFail($client->id);
 
             DB::commit();
+
             return new ClientDto(
                 client_id: $result->id,
                 first_name: $result->first_name,
@@ -115,6 +118,7 @@ class ClientRepository implements ClientRepositoryInterface
             }
 
             DB::commit();
+
             return $result;
         } catch (\Exception $e) {
             DB::rollBack();

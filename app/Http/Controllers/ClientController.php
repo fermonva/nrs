@@ -34,7 +34,7 @@ class ClientController extends Controller
      */
     public function index(): Renderable
     {
-        $clients                   = $this->clientRepositoryInterface->getAllClients();
+        $clients                   = $this->clientRepositoryInterface->getAllClients(10);
         $clientsWithNegativeProfit = $this->clientRepositoryInterface->getClientsWithNegativeProfit();
         return view('clients.index', compact('clients', 'clientsWithNegativeProfit'));
     }

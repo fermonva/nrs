@@ -20,16 +20,16 @@ class ClientProviderGas extends Model
 
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Client::class, 'client_id');
+        return $this->belongsTo(Client::class);
     }
 
     public function provider(): BelongsTo
     {
-        return $this->belongsTo(Provider::class, 'provider_id');
+        return $this->belongsTo(Provider::class);
     }
 
     public function gasQuality(): BelongsTo
     {
-        return $this->belongsTo(GasQuality::class, 'gas_quality_id');
+        return $this->belongsTo(GasQuality::class);
     }
 }

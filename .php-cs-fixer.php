@@ -22,7 +22,7 @@ return (new PhpCsFixer\Config())
         'array_indentation'                      => true,
         'array_syntax'                           => ['syntax' => 'short'],
         'combine_consecutive_unsets'             => true,
-        'class_attributes_separation'            => ['elements' => ['method' => 'one', ]],
+        'class_attributes_separation'            => ['elements' => ['method' => 'one', 'trait_import' => 'none']],
         'multiline_whitespace_before_semicolons' => false,
         'single_quote'                           => true,
         'ordered_imports'                        => true,
@@ -33,11 +33,15 @@ return (new PhpCsFixer\Config())
                 // '=' => 'align'
             ]
         ],
-        // 'blank_line_after_opening_tag' => true,
-        // 'blank_line_before_statement' => true,
+        'blank_line_after_namespace'   => true,
+        'blank_line_after_opening_tag' => true,
+        'blank_line_before_statement'  => [
+            'statements' => ['return']
+        ],
         'braces' => [
             'allow_single_line_closure' => true,
         ],
+        'single_space_around_construct' => true,
         // 'cast_spaces' => true,
         // 'class_definition' => array('singleLine' => true),
         'concat_space'              => ['spacing' => 'one'],
@@ -102,7 +106,7 @@ return (new PhpCsFixer\Config())
         'return_type_declaration' => true,
         // 'self_accessor' => true,
         // 'short_scalar_cast' => true,
-        // 'single_blank_line_before_namespace' => true,
+        //         'single_blank_line_before_namespace' => true,
         // 'single_class_element_per_statement' => true,
         // 'space_after_semicolon' => true,
         // 'standardize_not_equals' => true,
@@ -118,4 +122,4 @@ return (new PhpCsFixer\Config())
     ->setUsingCache(true)
     // ->setIndent("\t")
     ->setLineEnding("\n")
-;
+    ;

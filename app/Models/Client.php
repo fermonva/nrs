@@ -31,11 +31,11 @@ class Client extends Model
 
     public function getSalePriceAttribute(): float
     {
-        return  $this->clientProviderGas->gasQuality->price * 1.2;
+        return $this->clientProviderGas?->gasQuality?->price * 1.2 ?? 0.0;
     }
 
     public function getProfitAttribute(): float
     {
-        return  $this->clientProviderGas->gasQuality->price * 0.2;
+        return $this->clientProviderGas?->gasQuality?->price * 0.2 ?? 0.0;
     }
 }
